@@ -20,8 +20,8 @@
 
 ### 2. **Fichiers nettoyés**
 
-#### Supprimés
-- ❌ `components/ProgressBar.vue` (non utilisé)
+#### Conservés  
+- ✅ `components/ProgressBar.vue` (remis à disposition pour utilisation future)
 
 #### Créés
 - ✅ `pages/profile.vue` (page manquante)
