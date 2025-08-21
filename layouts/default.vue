@@ -4,41 +4,12 @@
       <slot />
     </main>
     
-    <BottomNav 
-      :nav-items="broodlNavItems"
-      :auto-hide="false"
-    />
+    <BottomNav />
   </div>
 </template>
 
 <script setup>
-
-const broodlNavItems = [
-  {
-    path: '/dashboard',
-    icon: '📊',
-    label: 'Dashboard',
-    badge: 0
-  },
-  {
-    path: '/challenge',
-    icon: '🎯', 
-    label: 'Défis',
-    badge: 3 
-  },
-  {
-    path: '/challenge/create',
-    icon: '➕',
-    label: 'Créer',
-    isSpecial: true 
-  },
-  {
-    path: '/profile',
-    icon: '👤',
-    label: 'Profil',
-    badge: 0
-  }
-]
+// Layout simplifié grâce au composable centralisé
 </script>
 
 <style>

@@ -9,7 +9,7 @@
         :to="item.path"
         class="nav-item"
         :class="{ 
-          'active': isActive(item.path),
+          'active': isActive(item.path, route.path),
           'create-btn': item.isSpecial
         }"
       >
@@ -25,37 +25,8 @@
 <script setup>
 const route = useRoute()
 
-// Navigation items avec icônes Unicode modernes
-const navItems = [
-  {
-    path: '/dashboard',
-    icon: '⊞', // ou '◳' ou '▦'
-    label: 'Dashboard'
-  },
-  {
-    path: '/challenge',
-    icon: '◎', // ou '⊙' ou '◉'
-    label: 'Défis'
-  },
-  {
-    path: '/challenge/create',
-    icon: '⊕', // ou '✚' ou '➕'
-    label: 'Créer',
-    isSpecial: true
-  },
-  {
-    path: '/profile',
-    icon: '◐', // ou '👤' ou '⚪'
-    label: 'Profil'
-  }
-]
-
-// Pages exclues
-const excludedRoutes = [
-  '/auth/login',
-  '/auth/register',
-  '/challenge/create'
-]
+// Utiliser le composable centralisé pour la navigation
+const { navItems, shouldShowNavigation, isActive } = useNavigation()
 
 // Conditions d'affichage
 const shouldShowBottomNav = computed(() => {
@@ -73,24 +44,9 @@ const shouldShowBottomNav = computed(() => {
     return false
   }
 
-  // Pages exclues
-  if (excludedRoutes.some(excluded => route.path.startsWith(excluded))) {
-    return false
-  }
-
-  return true
+  // Utiliser la fonction centralisée
+  return shouldShowNavigation(route.path)
 })
-
-// État actif
-const isActive = (path) => {
-  const currentPath = route.path
-  
-  if (path === '/dashboard') {
-    return currentPath === '/' || currentPath === '/dashboard'
-  }
-  
-  return currentPath.startsWith(path) && path !== '/'
-}
 </script>
 
 <style scoped>

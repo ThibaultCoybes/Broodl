@@ -35,7 +35,7 @@
     
     <div class="challenge-date">
       <span>Fin: {{ formatDate(challenge.endDate) }}</span>
-      <span>{{ getDaysLeft(challenge.endDate) }}</span>
+      <span>{{ formatEndDate(challenge.endDate) }}</span>
     </div>
   </div>
 </template>
@@ -61,11 +61,7 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const urgency = computed(() => {
-  const daysLeft = getDaysLeftNumber(props.challenge.endDate)
-  
-  if (daysLeft <= 2) return 'high'
-  if (daysLeft <= 7) return 'medium'
-  return 'low'
+  return getUrgencyLevel(props.challenge.endDate)
 })
 
 const urgencyText = computed(() => {
@@ -81,34 +77,12 @@ const handleClick = () => {
   emit('click', props.challenge.id)
 }
 
-// ✅ Formatage des valeurs pour éviter les décimales inutiles
-const formatValue = (value) => {
-  if (typeof value !== 'number') return value
-  return value % 1 === 0 ? value.toString() : value.toFixed(1)
-}
+// Utiliser les composables centralisés
+const { formatValue } = useUtils()
+const { formatShortDate, formatEndDate, getDaysLeft, getUrgencyLevel } = useDateFormatting()
 
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('fr-FR', {
-    day: '2-digit',
-    month: 'short'
-  })
-}
-
-const getDaysLeftNumber = (endDate) => {
-  const today = new Date()
-  const end = new Date(endDate)
-  const diffTime = end - today
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-}
-
-const getDaysLeft = (endDate) => {
-  const diffDays = getDaysLeftNumber(endDate)
-  
-  if (diffDays < 0) return 'Terminé'
-  if (diffDays === 0) return "Aujourd'hui"
-  if (diffDays === 1) return 'Demain'
-  return `Dans ${diffDays} jours`
-}
+const formatDate = formatShortDate
+const getDaysLeftNumber = getDaysLeft
 </script>
 
 <style scoped>

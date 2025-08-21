@@ -263,21 +263,8 @@ const handleViewDetails = (id) => {
   router.push(`/challenge/${id}`)
 }
 
-const handleAvatarError = (event) => {
-  // Utiliser une URL d'avatar par défaut qui existe
-  const defaultAvatar = 'https://ui-avatars.com/api/?name=User&background=random&color=fff&size=128';
-  
-  // Si l'image par défaut échoue aussi, utiliser un placeholder SVG en base64
-  if (event.target.src !== defaultAvatar) {
-    event.target.src = defaultAvatar;
-  } else {
-    // En cas d'échec du chargement de l'image par défaut, utiliser un SVG inline
-    event.target.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIsMTlBMywzIDAgMCwxIDksMTZBMywzIDAgMCwxIDEyLDEzQTMsMyAwIDAsMSAxNSwxNkEzLDMgMCAwLDEgMTIsMTlNMTksM0g1QTMgMyAwIDAsMCAyLDZWMThBMyAzIDAgMCwwIDUsMjFIMTlBMi45OSAyLjk5IDAgMCwwIDIyLDE4VjZBMyAzIDAgMCwwIDE5LDNNMTIsNUE0LDAgMCwxLDEgOCw5QTQsNCAwIDAsMSAxMiw1WiIvPjwvc3ZnPg==';
-  }
-  
-  // Empêcher les futures erreurs
-  event.target.onerror = null;
-}
+// Utiliser le composable centralisé
+const { handleAvatarError } = useUtils()
 
 // Fonctions utilitaires
 const getStatusText = (status) => {
@@ -327,32 +314,9 @@ const getEmptyMessage = () => {
   return messageMap[activeTab.value] || ''
 }
 
-const formatEndDate = (date) => {
-  const now = new Date()
-  const endDate = new Date(date)
-  const diff = endDate.getTime() - now.getTime()
-  const days = Math.ceil(diff / (1000 * 60 * 60 * 24))
-  
-  if (days < 0) return 'Terminé'
-  if (days === 0) return 'Aujourd\'hui'
-  if (days === 1) return 'Demain'
-  if (days <= 7) return `Dans ${days} jours`
-  if (days <= 30) return `Dans ${Math.ceil(days / 7)} semaines`
-  return `Dans ${Math.ceil(days / 30)} mois`
-}
-
-const formatLastActivity = (date) => {
-  const now = new Date()
-  const activityDate = new Date(date)
-  const diff = now.getTime() - activityDate.getTime()
-  const hours = Math.floor(diff / (1000 * 60 * 60))
-  const days = Math.floor(hours / 24)
-  
-  if (hours < 1) return 'À l\'instant'
-  if (hours < 24) return `Il y a ${hours}h`
-  if (days === 1) return 'Hier'
-  return `Il y a ${days} jours`
-}
+// Utiliser les fonctions centralisées du composable
+const { formatEndDate, formatTimeAgo } = useDateFormatting()
+const formatLastActivity = formatTimeAgo
 
 useHead({
   title: 'Mes défis - Broodl',

@@ -87,6 +87,7 @@ function getDisplayStatus(challenge: any): string {
     return 'active'
 }
 
+// Fonction utilitaire centralisée pour le serveur
 function getDaysLeft(endDate: string | Date): number {
     const today = new Date()
     const end = new Date(endDate)
